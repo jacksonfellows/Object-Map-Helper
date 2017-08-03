@@ -7,6 +7,7 @@ $(function(){
 
     var DomOutlineHandlers = {
         'click': function(e){
+            console.log('click');
             selector_val = $(e).attr('data-json-selector');
             $selector_box.val(selector_val);
         },

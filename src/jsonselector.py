@@ -51,7 +51,7 @@ def codify_json(json_str):
                 for i, (k,v) in enumerate(d.iteritems()):
                     # The current selector for this key is where we are plus
                     # ['key']
-                    this_sel = sel + "['%s']" % k
+                    this_sel = sel + "%s," % k
 
                     # Indent for formatting
                     s += tab(depth+1)
@@ -84,7 +84,7 @@ def codify_json(json_str):
                 for i, e in enumerate(d):
                     # The current selector for this key is where we are plus
                     # [current_index]
-                    this_sel = sel + "[%s]" % i
+                    this_sel = sel + "%s," % i
 
                     # Indent for formatting
                     s += tab(depth+1)

@@ -2,71 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>JSON Selector Generator</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <title>Jackson's Object ID Map Tool</title>
 
     <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
-    <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-
-      h1 {
-        margin-bottom: 40px;
-      }
-    </style>
   </head>
 
   <body>
 
 
-    <div class="container-fluid">
+    <div class="container-fluid" style="padding-top: 10px;">
 
-        <div class="navbar navbar-inverse navbar-fixed-top">
-          <div class="navbar-inner">
-            <div class="container pull-left">
-              <a class="brand" href="/">JSON Selector Generator</a>
-            </div>
-          </div>
+      <form method="post" action="{{ url_for('process') }}">
+        <div>
+          <label for="raw_json">JSON from the proxy:</label>
+          <textarea name="raw_json" rows="20" class="row-fluid"></textarea>
         </div>
-
-        <div class="row">
-            <p>
-              <button id="get_example" class="btn btn-primary"
-                  type="button">Click to see example JSON</button>
-            </p>
+        <div>
+          <input type="submit" value="Continue">
         </div>
+      </form>
 
-        <div class="row-fluid">
-            <form id="json_form" method="POST" action="/process" class="">
-                <div class="row">
-                    <div class="pull-left span8">
-                        <div class="control-group">
-                            <label class="control-label" for="rawjson">Paste in your JSON</label>
-                            <div class="controls">
-                                <textarea class="row-fluid" rows="17" id="rawjson" name="rawjson"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="control-group">
-                        <div class="controls">
-                            <input class="btn btn-success" type="submit" value="Process">
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-            <div class=row">
-                <p>View the <a href="https://github.com/joequery/JSON-Selector-Generator">source code</a> on github</p>
-                <p>View the <a href="/privacy">privacy policy</a></p>
-            </div>
-        </div>
-
+      <p>View the <a href="https://github.com/jacksonfellows/JSON-Selector-Generator">source code</a> on github</p>
 
     </div> <!-- /container -->
 
@@ -74,23 +30,5 @@
     <script src="{{url_for('static', filename='js/jquery.dom-outline-1.0.js')}}"></script>
     <script src="{{url_for('static', filename='js/home.js')}}"></script>
 
-    <!-- Start of StatCounter Code for Default Guide -->
-    <script type="text/javascript">
-    var sc_project=8526871; 
-    var sc_invisible=1; 
-    var sc_security="f3e5fc75"; 
-    var scJsHost = (("https:" == document.location.protocol) ?
-    "https://secure." : "http://www.");
-    document.write("<sc"+"ript type='text/javascript' src='" +
-    scJsHost +
-    "statcounter.com/counter/counter.js'></"+"script>");</script>
-    <noscript><div class="statcounter"><a title=""
-    href="http://statcounter.com/" target="_blank"><img
-    class="statcounter"
-    src="https://c.statcounter.com/8526871/0/f3e5fc75/1/"
-    alt=""></a></div></noscript>
-    <!-- End of StatCounter Code for Default Guide -->
-
   </body>
 </html>
-

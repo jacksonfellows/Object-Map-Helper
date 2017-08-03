@@ -127,7 +127,7 @@ var DomOutline = function (options) {
             return;
         }
         jQuery('body').on(event_type +'.'+ self.opts.namespace, function(e){
-            if (self.opts.filter && !jQuery(e.target).is(self.opts.filter))
+            if (self.opts.filter && !jQuery(e.target).is(self.opts.filter) && event_type != 'click') // click events need to be handled! (otherwise links, buttons, etc. don't work)
                 return false;
 
             // I can't explain why this has to happen...but...if we
