@@ -16,7 +16,9 @@
 
       <p>Updated object id map:</p>
       <p>You can download it <a href="{{ url_for('objectidmap') }}">here</a></p>
-      {{map_json|safe}}
+      <div id="json">
+        {{map_json|safe}}
+      </div>
 
     </div> <!-- /container -->
 
