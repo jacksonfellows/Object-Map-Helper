@@ -1,1 +1,207 @@
-{"IAM": {"ignore": ["^DeactivateMfaDevice", "^GenerateCredentialReport"], "valid": {"UpdateUser": {"map_id": "object.user.user_name", "location": {"keys": ["request_body", "UserName"]}}, "CreateGroup": {"map_id": "object.group.arn", "location": {"keys": ["response_body", "CreateGroupResponse", "CreateGroupResult", "Group", "Arn"]}}, "CreateUser": {"map_id": "object.user.arn", "location": {"keys": ["response_body", "CreateUserResponse", "CreateUserResult", "User", "Arn"]}}}, "serviceNames": ["iam"]}, "default": {"ignore": ["^Get.+", "^List.+", "^Delete.+", "^Describe.+"]}, "CloudFormation": {"ignore": [], "valid": {"CreateStack": {"region": {"keys": ["request_headers", "Host"], "regex": "(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)"}, "map_id": "object.stack.stack_id", "location": {"keys": ["response_body", "CreateStackResponse", "CreateStackResult", "StackId"]}}}, "serviceNames": ["cloudformation"]}, "SWF": {"ignore": [], "valid": {}, "serviceNames": ["swf", "SimpleWorkflowService"]}, "SQS": {"ignore": [], "valid": {"CreateQueue": {"map_id": "object.queue.queue_url", "location": {"keys": ["response_body", "CreateQueueResponse", "CreateQueueResult", "QueueUrl"]}}}, "serviceNames": ["queue"]}, "EC2": {"ignore": [], "valid": {"CreateVpc": {"region": {"keys": ["request_headers", "Host"], "regex": "(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)"}, "map_id": "object.vpc.vpc_id", "location": {"keys": ["response_body", "CreateVpcResponse", "vpc", "vpcId"]}}, "CreateInternetGateway": {"location": {"keys": ["response_body", "CreateInternetGatewayResponse", "internetGateway", "internetGatewayId"]}}, "CreateSecurityGroup": {"region": {"keys": ["request_headers", "Host"], "regex": "(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)"}, "map_id": "object.security_group.group_id", "location": {"keys": ["response_body", "CreateSecurityGroupResponse", "groupId"]}}, "RunInstances": {"region": {"keys": ["response_body", "RunInstancesResponse", "instancesSet", "item", "placement", "availabilityZone"]}, "map_id": "object.instance.instance_id", "location": {"keys": ["response_body", "RunInstancesResponse", "instancesSet", "item", "instanceId"]}}}, "serviceNames": ["ec2"]}, "S3": {"ignore": [], "valid": {"PutBucket": {"region": {"keys": ["request_body", "CreateBucketConfiguration", "LocationConstraint"]}, "map_id": "object.bucket.bucket_name", "location": {"keys": ["request_headers", "Host"], "regex": "[^\\.]+"}}}, "serviceNames": ["s3"]}}
+{
+  "CloudFormation": {
+    "ignore": [], 
+    "serviceNames": [
+      "cloudformation"
+    ], 
+    "valid": {
+      "CreateStack": {
+        "location": {
+          "keys": [
+            "response_body", 
+            "CreateStackResponse", 
+            "CreateStackResult", 
+            "StackId"
+          ]
+        }, 
+        "map_id": "object.stack.stack_id", 
+        "region": {
+          "keys": [
+            "request_headers", 
+            "Host"
+          ], 
+          "regex": "(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)"
+        }
+      }
+    }
+  }, 
+  "EC2": {
+    "ignore": [], 
+    "serviceNames": [
+      "ec2"
+    ], 
+    "valid": {
+      "CreateInternetGateway": {
+        "location": {
+          "keys": [
+            "response_body", 
+            "CreateInternetGatewayResponse", 
+            "internetGateway", 
+            "internetGatewayId"
+          ]
+        }
+      }, 
+      "CreateSecurityGroup": {
+        "location": {
+          "keys": [
+            "response_body", 
+            "CreateSecurityGroupResponse", 
+            "groupId"
+          ]
+        }, 
+        "map_id": "object.security_group.group_id", 
+        "region": {
+          "keys": [
+            "request_headers", 
+            "Host"
+          ], 
+          "regex": "(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)"
+        }
+      }, 
+      "CreateVpc": {
+        "location": {
+          "keys": [
+            "response_body", 
+            "CreateVpcResponse", 
+            "vpc", 
+            "vpcId"
+          ]
+        }, 
+        "map_id": "object.vpc.vpc_id", 
+        "region": {
+          "keys": [
+            "request_headers", 
+            "Host"
+          ], 
+          "regex": "(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)"
+        }
+      }, 
+      "RunInstances": {
+        "location": {
+          "keys": [
+            "response_body", 
+            "RunInstancesResponse", 
+            "instancesSet", 
+            "item", 
+            "instanceId"
+          ]
+        }, 
+        "map_id": "object.instance.instance_id", 
+        "region": {
+          "keys": [
+            "response_body", 
+            "RunInstancesResponse", 
+            "instancesSet", 
+            "item", 
+            "placement", 
+            "availabilityZone"
+          ]
+        }
+      }
+    }
+  }, 
+  "IAM": {
+    "ignore": [
+      "^DeactivateMfaDevice", 
+      "^GenerateCredentialReport"
+    ], 
+    "serviceNames": [
+      "iam"
+    ], 
+    "valid": {
+      "CreateGroup": {
+        "location": {
+          "keys": [
+            "response_body", 
+            "CreateGroupResponse", 
+            "CreateGroupResult", 
+            "Group", 
+            "Arn"
+          ]
+        }, 
+        "map_id": "object.group.arn"
+      }, 
+      "CreateUser": {
+        "location": {
+          "keys": [
+            "response_body", 
+            "CreateUserResponse", 
+            "CreateUserResult", 
+            "User", 
+            "Arn"
+          ]
+        }, 
+        "map_id": "object.user.arn"
+      }, 
+      "UpdateUser": {
+        "location": {
+          "keys": [
+            "request_body", 
+            "UserName"
+          ]
+        }, 
+        "map_id": "object.user.user_name"
+      }
+    }
+  }, 
+  "S3": {
+    "ignore": [], 
+    "serviceNames": [
+      "s3"
+    ], 
+    "valid": {
+      "PutBucket": {
+        "location": {
+          "keys": [
+            "request_headers", 
+            "Host"
+          ], 
+          "regex": "[^\\.]+"
+        }, 
+        "map_id": "object.bucket.bucket_name", 
+        "region": {
+          "keys": [
+            "request_body", 
+            "CreateBucketConfiguration", 
+            "LocationConstraint"
+          ]
+        }
+      }
+    }
+  }, 
+  "SQS": {
+    "ignore": [], 
+    "serviceNames": [
+      "queue"
+    ], 
+    "valid": {
+      "CreateQueue": {
+        "location": {
+          "keys": [
+            "response_body", 
+            "CreateQueueResponse", 
+            "CreateQueueResult", 
+            "QueueUrl"
+          ]
+        }, 
+        "map_id": "object.queue.queue_url"
+      }
+    }
+  }, 
+  "SWF": {
+    "ignore": [], 
+    "serviceNames": [
+      "swf", 
+      "SimpleWorkflowService"
+    ], 
+    "valid": {}
+  }, 
+  "default": {
+    "ignore": [
+      "^Get.+", 
+      "^List.+", 
+      "^Delete.+", 
+      "^Describe.+"
+    ]
+  }
+}

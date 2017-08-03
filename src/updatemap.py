@@ -11,6 +11,6 @@ def update_map(unique_id_path, service, action):
         new_map[service]['valid'][action] = {'location': unique_id_keys}
 
     with open('objectidmap.json', 'w') as old_map:
-        json.dump(new_map, old_map)
+        json.dump(new_map, old_map, indent=2, sort_keys=True)
 
     return json.dumps(new_map)
