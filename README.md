@@ -1,4 +1,4 @@
-JSON Selector Generator
-=======================
+Object Map Helper
+=================
 
-A simple GUI for generating selectors used to access JSON data
+A tool that automates updates of the object id map for the Cloud Coreo Proxy
