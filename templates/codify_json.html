@@ -16,8 +16,10 @@
 
       <form method="post" action="{{ url_for('create_map') }}">
         <div>
-          <label for="selector">Path to {{target}}:</label>
-          <input name="selector" id="selector" type="text" class="input-xxlarge">
+          <label for="selector">Path to unique id:</label>
+          <input name="selector" id="selector" type="text" class="input-xxlarge" readonly>
+          <label for="region">Path to region:</label>
+          <input name="region" type="text" class="input-xlarge" value="{{ region_path }}" readonly>
           <label for="service">Service:</label>
           <input name="service" type="text" class="input-xlarge">
           <label for="action">Action:</label>
@@ -28,7 +30,7 @@
         </div>
       </form>
 
-      <p>Click on the {{target}}</p>
+      <p>Click on the unique id</p>
       <div id="json">
         {{codified_json|safe}}
       </div>

@@ -14,8 +14,8 @@
 
     <div class="container-fluid" style="padding-top: 10px;">
 
+      <p>You can view the raw JSON <a href="{{ url_for('objectidmap') }}">here</a></p>
       <p>Updated object id map:</p>
-      <p>You can download it <a href="{{ url_for('objectidmap') }}">here</a></p>
       <div id="json">
         {{map_json|safe}}
       </div>

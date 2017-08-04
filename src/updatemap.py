@@ -1,14 +1,22 @@
 import json
 
-def update_map(unique_id_path, service, action):
+region_regex = '(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)'
+
+def keyify(keys, regex=None):
+    if regex:
+        return {'keys': keys[:-1].split(','), 'regex': regex}
+    return {'keys': keys[:-1].split(',')}
+
+def update_map(unique_id_path, region_path, service, action):
     with open('objectidmap.json') as old_map:
         new_map = json.load(old_map)
 
-        unique_id_keys = {'keys': unique_id_path[:-1].split(',')}
-        print(unique_id_keys)
         if service not in new_map:
             new_map[service] = {'valid': {}}
-        new_map[service]['valid'][action] = {'location': unique_id_keys}
+        new_map[service]['valid'][action] = {
+            'location': keyify(unique_id_path),
+            'region': keyify(region_path, regex=region_regex)
+        }
 
     with open('objectidmap.json', 'w') as old_map:
         json.dump(new_map, old_map, indent=2, sort_keys=True)

@@ -1,7 +1,11 @@
 import json
+import re
 from numbers import Number
 
 TAB_INDENT = "  "
+region_regex = re.compile("(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)")
+space = re.compile("\s")
+region_path = ""
 
 def codify_json(json_str):
     '''
@@ -11,9 +15,9 @@ def codify_json(json_str):
     '''
     def span(c, v, sel=''):
         if sel:
-            return "<span class=\"hljs-%s\" data-json-selector=\"%s\">%s</span>" % (c,sel, v)
+            return "<span class=\"hljs-%s\" data-json-selector=\"%s\">%s</span>" % (c, sel, v)
         else:
-            return "<span class=\"hljs-%s\">%s</span>" % (c,v)
+            return "<span class=\"hljs-%s\">%s</span>" % (c, v)
 
     def dquote(s):
         return '"%s"' % s
@@ -22,6 +26,7 @@ def codify_json(json_str):
         return TAB_INDENT * n
 
     def apply_attrs(d, sel='', depth=0):
+        global region_path
         ################################
         # Handle the terminal cases
         ################################
@@ -32,6 +37,9 @@ def codify_json(json_str):
             return span('value', span('literal', str(d).lower(), sel))
 
         if isinstance(d, basestring):
+            # if we have a region, save its path
+            if region_regex.findall(d) and not space.findall(d):
+                region_path = sel
             return span('value', dquote(span('string', d, sel)))
 
         if isinstance(d, Number):
@@ -107,4 +115,5 @@ def codify_json(json_str):
     data = json.loads(json_str)
     pre = '<pre><code class=" hljs json">'
     end = '</code></pre>'
-    return pre + apply_attrs(data) + end
+    print(region_path)
+    return pre + apply_attrs(data) + end, region_path
