@@ -34,7 +34,10 @@
       "CreateInternetGateway": {
         "location": {
           "keys": [
-            ""
+            "response_body", 
+            "CreateInternetGatewayResponse", 
+            "internetGateway", 
+            "internetGatewayId"
           ]
         }, 
         "region": {

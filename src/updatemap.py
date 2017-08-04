@@ -3,9 +3,10 @@ import json
 region_regex = '(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)'
 
 def keyify(keys, regex=None):
+    json_keys = {'keys': keys[:-1].split(',')}
     if regex:
-        return {'keys': keys[:-1].split(','), 'regex': regex}
-    return {'keys': keys[:-1].split(',')}
+        json_keys['regex'] = regex
+    return json_keys
 
 def update_map(unique_id_path, region_path, service, action):
     with open('objectidmap.json') as old_map:
@@ -21,4 +22,4 @@ def update_map(unique_id_path, region_path, service, action):
     with open('objectidmap.json', 'w') as old_map:
         json.dump(new_map, old_map, indent=2, sort_keys=True)
 
-    return json.dumps(new_map)
+    return json.dumps(new_map, sort_keys=True)

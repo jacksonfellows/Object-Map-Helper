@@ -2,10 +2,28 @@ import json
 import re
 from numbers import Number
 
-TAB_INDENT = "  "
-region_regex = re.compile("(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)")
-space = re.compile("\s")
-region_path = ""
+TAB_INDENT = '  '
+region_regex = re.compile('(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)')
+space = re.compile('\s')
+region_path = ''
+
+def get_info(json_str):
+    data = json_str
+    request_headers = data['request_headers']
+    request_body = data['request_body']
+
+    if 'X-Amz-Target' in request_headers:
+        service = request_headers['X-Amz-Target'].split('.')[0]
+    else:
+        host = request_headers['Host'].split('.')
+        service = host[-3]
+        if region_regex.findall(service):
+            service = host[-4]
+    service = service.upper()
+
+    action = request_body['Action']
+
+    return service, action
 
 def codify_json(json_str):
     '''
@@ -15,9 +33,9 @@ def codify_json(json_str):
     '''
     def span(c, v, sel=''):
         if sel:
-            return "<span class=\"hljs-%s\" data-json-selector=\"%s\">%s</span>" % (c, sel, v)
+            return '<span class=\"hljs-%s\" data-json-selector=\"%s\">%s</span>' % (c, sel, v)
         else:
-            return "<span class=\"hljs-%s\">%s</span>" % (c, v)
+            return '<span class=\"hljs-%s\">%s</span>' % (c, v)
 
     def dquote(s):
         return '"%s"' % s
@@ -31,7 +49,7 @@ def codify_json(json_str):
         # Handle the terminal cases
         ################################
         if d is None:
-            return span('value', span('literal', "null", sel))
+            return span('value', span('literal', 'null', sel))
 
         if isinstance(d, bool):
             return span('value', span('literal', str(d).lower(), sel))
@@ -53,13 +71,13 @@ def codify_json(json_str):
 
             # Don't bother creating a new line and indenting for an empty dict
             if num_keys == 0:
-                s = "{}"
+                s = '{}'
             else:
-                s = "{\n"
+                s = '{\n'
                 for i, (k,v) in enumerate(d.iteritems()):
                     # The current selector for this key is where we are plus
                     # ['key']
-                    this_sel = sel + "%s," % k
+                    this_sel = sel + '%s,' % k
 
                     # Indent for formatting
                     s += tab(depth+1)
@@ -72,9 +90,9 @@ def codify_json(json_str):
 
                     # Add commas and newlines as needed
                     if i<num_keys-1:
-                        s += ","
-                        s += "\n"
-                s += "\n" + tab(depth) + "}"
+                        s += ','
+                        s += '\n'
+                s += '\n' + tab(depth) + '}'
 
             # Wrap the whole dict in a value tag so front-end users can select
             # the entire dict if they wish.
@@ -86,13 +104,13 @@ def codify_json(json_str):
 
             # Don't bother creating a new line and indenting for an empty list
             if num_elements == 0:
-                s = "[]"
+                s = '[]'
             else:
-                s = "[\n"
+                s = '[\n'
                 for i, e in enumerate(d):
                     # The current selector for this key is where we are plus
                     # [current_index]
-                    this_sel = sel + "%s," % i
+                    this_sel = sel + '%s,' % i
 
                     # Indent for formatting
                     s += tab(depth+1)
@@ -102,9 +120,9 @@ def codify_json(json_str):
 
                     # Add commas and newlines as needed
                     if i<num_elements-1:
-                        s += ","
-                        s += "\n"
-                s += "\n" + tab(depth) + "]"
+                        s += ','
+                        s += '\n'
+                s += '\n' + tab(depth) + ']'
 
             # Wrap the whole list in a value tag so front-end users can select
             # the entire dict if they wish.
@@ -115,5 +133,4 @@ def codify_json(json_str):
     data = json.loads(json_str)
     pre = '<pre><code class=" hljs json">'
     end = '</code></pre>'
-    print(region_path)
     return pre + apply_attrs(data) + end, region_path

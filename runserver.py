@@ -2,8 +2,7 @@ import json
 
 from flask import Flask, request, render_template, jsonify
 
-from src.jsonselector import codify_json
-from src.flaskhelpers import extract_post_data
+from src.jsonselector import codify_json, get_info
 
 from src.updatemap import update_map
 
@@ -15,24 +14,15 @@ def home():
 
 @app.route('/process', methods=['POST'])
 def process():
-    required_fields = ('raw_json',)
-    post,errors = extract_post_data(request, required_fields)
-
-    if errors:
-        return jsonify(errors=errors)
-
     try:
-        data = json.loads(post['raw_json'])
+        data = json.loads(request.form['raw_json'])
     except ValueError:
         return 'Invalid JSON'
 
-    try:
-        codified_json, region_path = codify_json(json.dumps(data))
-    except ValueError, e:
-        print(str(e))
-        return 'Error'
+    codified_json, region_path = codify_json(json.dumps(data))
+    service, action = get_info(data)
 
-    return render_template('codify_json.html', codified_json=codified_json, region_path=region_path)
+    return render_template('codify_json.html', codified_json=codified_json, region_path=region_path, service=service, action=action)
 
 @app.route('/create_map', methods=['POST'])
 def create_map():
