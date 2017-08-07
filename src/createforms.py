@@ -7,4 +7,5 @@ def selection_form(data, target, name=None):
 	body = ''
 	for i in data:
 		body += box(i, name)
-	return '<form method="post" target="{0}">{1}</form>'.format(target, body)
+	body += '</br><input type="submit" value="Submit">'
+	return '<form method="post" action="{0}">{1}</form>'.format(target, body)

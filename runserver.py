@@ -3,14 +3,27 @@ import json
 from flask import Flask, request, render_template, jsonify
 
 from src.jsonselector import codify_json, get_info
-
 from src.updatemap import update_map
+from src.parseawshelp import get_commands
+from src.createforms import selection_form
 
 app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def home():
+    commands = get_commands('aws')
+    return render_template('form.html', form=selection_form(commands, '/actions', 'service'), message='Choose a service to add to the object id map:')
+
+@app.route('/testing', methods=['GET'])
+def testing():
     return render_template('home.html')
+
+@app.route('/actions', methods=['POST'])
+def actions():
+    service = request.form['service']
+
+    commands = get_commands('aws '+service)
+    return render_template('form.html', form=selection_form(commands, '/commands'), message='Select actions to add to the object id map:')
 
 @app.route('/process', methods=['POST'])
 def process():

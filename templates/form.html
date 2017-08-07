@@ -12,6 +12,7 @@
 
     <div class="container-fluid" style="padding-top: 10px;">
 
+      <!-- 
       <form method="post" action="{{ url_for('process') }}">
         <div>
           <label for="raw_json">JSON from the proxy:</label>
@@ -21,6 +22,10 @@
           <input type="submit" value="Continue">
         </div>
       </form>
+      !-->
+
+      <p>{{message}}</p>
+      {{form|safe}}
 
       <p>View the <a href="https://github.com/jacksonfellows/Object-Map-Helper">source code</a> on github</p>
 
