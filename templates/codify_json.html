@@ -16,8 +16,8 @@
 
       <form method="post" action="{{ url_for('create_map') }}">
         <div>
-          <label for="service">Service:</label>
-          <input name="service" type="text" class="input-xlarge" value="{{ service }}" readonly>
+          <label for="service">Service (note: capitilization may be off):</label>
+          <input name="service" type="text" class="input-xlarge" value="{{ service }}">
           <label for="action">Action:</label>
           <input name="action" type="text" class="input-xlarge" value="{{ action }}" readonly>
           <label for="selector">Path to unique id:</label>

@@ -12,14 +12,10 @@ def get_info(json_str):
     request_headers = data['request_headers']
     request_body = data['request_body']
 
-    if 'X-Amz-Target' in request_headers:
-        service = request_headers['X-Amz-Target'].split('.')[0]
-    else:
-        host = request_headers['Host'].split('.')
-        service = host[-3]
-        if region_regex.findall(service):
-            service = host[-4]
-    service = service.upper()
+    host = request_headers['Host'].split('.')
+    service = host[-3]
+    if region_regex.findall(service):
+        service = host[-4]
 
     action = request_body['Action']
 
@@ -56,7 +52,7 @@ def codify_json(json_str):
 
         if isinstance(d, basestring):
             # if we have a region, save its path
-            if region_regex.findall(d) and not space.findall(d):
+            if region_regex.findall(d) and not space.findall(d) and region_path == '':
                 region_path = sel
             return span('value', dquote(span('string', d, sel)))
 
