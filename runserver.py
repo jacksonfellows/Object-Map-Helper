@@ -12,7 +12,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def home():
     commands = get_commands('aws')
-    return render_template('form.html', form=selection_form(commands, '/actions', 'service'), message='Choose a service to add to the object id map:')
+    return render_template('form.html', form=selection_form(commands, '/actions', 'service', radio=True), message='Choose a service to add to the object id map:')
 
 @app.route('/testing', methods=['GET'])
 def testing():
@@ -23,7 +23,14 @@ def actions():
     service = request.form['service']
 
     commands = get_commands('aws '+service)
-    return render_template('form.html', form=selection_form(commands, '/commands'), message='Select actions to add to the object id map:')
+    return render_template('form.html', form=selection_form(commands, '/commands', 'commands', hidden=[['service', service]]), message='Select actions to add to the object id map:')
+
+@app.route('/commands', methods=['POST'])
+def commands():
+    service = request.form['service']
+    commands = request.form.getlist('commands')
+
+    return 'service: '+service+'\ncommands: '+str(commands)
 
 @app.route('/process', methods=['POST'])
 def process():
