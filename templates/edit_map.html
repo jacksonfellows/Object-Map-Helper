@@ -17,13 +17,13 @@
       <form method="post" action="{{ url_for('create_map') }}">
         <div>
           <label for="service">Service (note: capitilization may be off):</label>
-          <input name="service" type="text" class="input-xlarge" value="{{ service }}">
+          <input name="service" type="text" class="input-xlarge" value="{{service}}">
           <label for="action">Action:</label>
-          <input name="action" type="text" class="input-xlarge" value="{{ action }}" readonly>
+          <input name="action" type="text" class="input-xlarge" value="{{action}}" readonly>
           <label for="selector">Path to unique id:</label>
           <input name="selector" id="selector" type="text" class="input-xxlarge" readonly>
           <label for="region">Path to region:</label>
-          <input name="region" type="text" class="input-xxlarge" value="{{ region_path }}" readonly>
+          <input name="region" type="text" class="input-xxlarge" value="{{region_path}}" readonly>
         </div>
         <div>
           <input type="submit" value="Add To Map">
@@ -32,7 +32,7 @@
 
       <p>Click on the unique id</p>
       <div id="json">
-        {{codified_json|safe}}
+        {{html_map|safe}}
       </div>
 
       <p>View the <a href="https://github.com/jacksonfellows/Object-Map-Helper">source code</a> on github</p>
