@@ -13,10 +13,13 @@ def update_map(unique_id_path, region_path, service, action):
         new_map = json.load(old_map)
 
         if service not in new_map:
-            new_map[service] = {'valid': {}}
+            new_map[service] = {
+            'valid': {},
+            'serviceNames': [service.lower()]
+            }
         new_map[service]['valid'][action] = {
             'location': keyify(unique_id_path),
-            'region': keyify(region_path, regex=region_regex)
+            'region': keyify(region_path, regex=region_regex),
         }
 
     with open('objectidmap.json', 'w') as old_map:

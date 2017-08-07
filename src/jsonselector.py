@@ -1,5 +1,4 @@
-import json
-import re
+import json, re
 from numbers import Number
 
 TAB_INDENT = '  '
@@ -16,6 +15,12 @@ def get_info(json_str):
     service = host[-3]
     if region_regex.findall(service):
         service = host[-4]
+
+    with open('objectidmap.json') as fl:
+        object_map = json.load(fl)
+        for s in object_map:
+            if s != 'default' and service in object_map[s]['serviceNames']:
+                service = s
 
     action = request_body['Action']
 
