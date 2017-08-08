@@ -14,10 +14,12 @@
 
     <div class="container-fluid" style="padding-top: 10px;">
 
+      {{warning|safe}}
+
       <form method="post" action="{{ url_for('createmap') }}">
         <div>
-          <label for="service">Service (note: capitilization may be off):</label>
-          <input name="service" type="text" class="input-xlarge" value="{{service}}">
+          <label for="service">Service</label>
+          <input name="service" type="text" class="input-xlarge" value="{{service}}" {{readonly}}>
           <label for="action">Action:</label>
           <input name="action" type="text" class="input-xlarge" value="{{action}}" readonly>
           <label for="selector">Path to unique id:</label>

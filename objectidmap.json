@@ -25,6 +25,45 @@
       }
     }
   }, 
+  "EC2": {
+    "serviceNames": [
+      "ec2"
+    ], 
+    "valid": {
+      "CreateInternetGateway": {
+        "location": {
+          "keys": [
+            "response_body", 
+            "CreateInternetGatewayResponse", 
+            "internetGateway", 
+            "internetGatewayId"
+          ]
+        }, 
+        "region": {
+          "keys": [
+            "url"
+          ], 
+          "regex": "(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)"
+        }
+      }, 
+      "CreateVpc": {
+        "location": {
+          "keys": [
+            "response_body", 
+            "CreateVpcResponse", 
+            "vpc", 
+            "vpcId"
+          ]
+        }, 
+        "region": {
+          "keys": [
+            "url"
+          ], 
+          "regex": "(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)"
+        }
+      }
+    }
+  }, 
   "IAM": {
     "ignore": [
       "^DeactivateMfaDevice", 
@@ -151,44 +190,5 @@
       "^Delete.+", 
       "^Describe.+"
     ]
-  }, 
-  "ec2": {
-    "serviceNames": [
-      "ec2"
-    ], 
-    "valid": {
-      "CreateInternetGateway": {
-        "location": {
-          "keys": [
-            "response_body", 
-            "CreateInternetGatewayResponse", 
-            "internetGateway", 
-            "internetGatewayId"
-          ]
-        }, 
-        "region": {
-          "keys": [
-            "url"
-          ], 
-          "regex": "(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)"
-        }
-      }, 
-      "CreateVpc": {
-        "location": {
-          "keys": [
-            "response_body", 
-            "CreateVpcResponse", 
-            "vpc", 
-            "vpcId"
-          ]
-        }, 
-        "region": {
-          "keys": [
-            "url"
-          ], 
-          "regex": "(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)"
-        }
-      }
-    }
   }
 }

@@ -10,6 +10,7 @@ def get_info(json_str):
     data = json_str
     request_headers = data['request_headers']
     request_body = data['request_body']
+    warning = True
 
     host = request_headers['Host'].split('.')
     service = host[-3]
@@ -21,10 +22,11 @@ def get_info(json_str):
         for s in object_map:
             if s != 'default' and service in object_map[s]['serviceNames']:
                 service = s
+                warning = False
 
     action = request_body['Action']
 
-    return service, action
+    return service, warning, action
 
 def codify_json(json_str):
     '''

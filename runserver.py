@@ -83,9 +83,9 @@ def editmap():
     data = data[j_i]
 
     html_map, region_path = codify_json(json.dumps(data))
-    service, action = get_info(data)
+    service, warning, action = get_info(data)
 
-    return render_template('edit_map.html', html_map=html_map, region_path=region_path, service=service, action=action)
+    return render_template('edit_map.html', html_map=html_map, region_path=region_path, service=service, action=action, warning=show_error('Please correct capitilization of the service name') if warning else '', readonly='' if warning else 'readonly')
 
 @app.route('/createmap', methods=['POST'])
 def createmap():
