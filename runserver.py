@@ -5,20 +5,17 @@ from flask import Flask, request, render_template, jsonify
 from src.jsonselector import codify_json, get_info
 from src.updatemap import update_map
 from src.parseawshelp import get_commands, try_command, get_params
-from src.createforms import selection_form, text_form
+from src.createforms import selection_form, text_form, show_error
 
 service = ''
 commands_list = []
 c_i = 0
+attempt = True
 
 app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template('home.html')
-
-@app.route('/testing', methods=['GET'])
-def testing():
     commands = get_commands('aws')
     return render_template('form.html', form=selection_form(commands, '/actions', 'service', radio=True), message='Choose a service to add to the object id map:')
 
@@ -34,24 +31,41 @@ def commands():
     global commands_list, c_i
     commands_list = request.form.getlist('commands')
     c_i = 0
+    attempt = True
 
     return command()
 
 @app.route('/command', methods=['GET'])
 def command():
-    global service, commands_list, c_i
+    global service, commands_list, c_i, attempt
     c = commands_list[c_i]
-    c_i += 1
 
     run = 'aws {0} {1}'.format(service, c)
     params = get_params(run)
-    return render_template('form.html', form=text_form(params, '/runcommand'), message='Fill out the parameters for \'{0}\':'.format(run))
+    form = text_form(params, '/runcommand')
+    if attempt != True:
+        form = show_error(attempt) + form
+    return render_template('form.html', form=form, message='Fill out the parameters for \'{0}\':'.format(run))
 
 @app.route('/runcommand', methods=['POST'])
 def runcommand():
-    pass
+    global service, commands_list, c_i, attempt
+    c = commands_list[c_i]
+    run = 'aws {0} {1}'.format(service, c)
 
-@app.route('/editmap', methods=['POST'])
+    for tag, v in request.form.items():
+        if v != '':
+            run += ' {0} "{1}"'.format(tag, v)
+
+    attempt = try_command(run)
+    if attempt == True:
+        c_i += 1
+        if c_i == len(commands_list):
+            return editmap()
+
+    return command()
+
+@app.route('/editmap', methods=['GET'])
 def editmap():
     try:
         data = json.loads(request.form['raw_json'])
@@ -74,6 +88,10 @@ def create_map():
     map_json, region_path = codify_json(new_map)
 
     return render_template('show_map.html', map_json=map_json)
+
+@app.route('/proxy', methods=['POST'])
+def proxy():
+    pass
 
 @app.route('/objectidmap', methods=['GET'])
 def objectidmap():

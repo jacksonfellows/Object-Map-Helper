@@ -24,72 +24,7 @@
         }
       }
     }
-  }, 
-  "EC2": {
-    "ignore": [], 
-    "serviceNames": [
-      "ec2"
-    ], 
-    "valid": {
-      "CreateSecurityGroup": {
-        "location": {
-          "keys": [
-            "response_body", 
-            "CreateSecurityGroupResponse", 
-            "groupId"
-          ]
-        }, 
-        "map_id": "object.security_group.group_id", 
-        "region": {
-          "keys": [
-            "request_headers", 
-            "Host"
-          ], 
-          "regex": "(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)"
-        }
-      }, 
-      "CreateVpc": {
-        "location": {
-          "keys": [
-            "response_body", 
-            "CreateVpcResponse", 
-            "vpc", 
-            "vpcId"
-          ]
-        }, 
-        "map_id": "object.vpc.vpc_id", 
-        "region": {
-          "keys": [
-            "request_headers", 
-            "Host"
-          ], 
-          "regex": "(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)"
-        }
-      }, 
-      "RunInstances": {
-        "location": {
-          "keys": [
-            "response_body", 
-            "RunInstancesResponse", 
-            "instancesSet", 
-            "item", 
-            "instanceId"
-          ]
-        }, 
-        "map_id": "object.instance.instance_id", 
-        "region": {
-          "keys": [
-            "response_body", 
-            "RunInstancesResponse", 
-            "instancesSet", 
-            "item", 
-            "placement", 
-            "availabilityZone"
-          ]
-        }
-      }
-    }
-  }, 
+  },
   "IAM": {
     "ignore": [
       "^DeactivateMfaDevice", 

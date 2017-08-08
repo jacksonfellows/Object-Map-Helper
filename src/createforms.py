@@ -16,3 +16,11 @@ def text_form(data, target):
 			body += text
 	body += '</br><input type="submit" value="Submit">'
 	return '<form method="post" action="{0}">{1}{2}</form>'.format(target, req_body, body)
+
+def show_error(message):
+	body = ''
+	for line in message.split('\n'):
+		if line == '':
+			continue
+		body += '{0}</br>'.format(line)
+	return '<div class="alert alert-danger">{0}</div>'.format(body)
