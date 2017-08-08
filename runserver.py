@@ -1,4 +1,4 @@
-import json
+import json, time
 
 from flask import Flask, request, render_template, jsonify
 
@@ -11,6 +11,7 @@ service = ''
 commands_list = []
 c_i = 0
 attempt = True
+j_i = 0
 
 app = Flask(__name__)
 
@@ -32,6 +33,10 @@ def commands():
     commands_list = request.form.getlist('commands')
     c_i = 0
     attempt = True
+
+    with open('proxy.json', 'w') as fl:
+        json.dump([], fl)
+    j_i = 0
 
     return command()
 
@@ -67,18 +72,24 @@ def runcommand():
 
 @app.route('/editmap', methods=['GET'])
 def editmap():
-    try:
-        data = json.loads(request.form['raw_json'])
-    except ValueError:
-        return 'Invalid JSON'
+    global j_i
+    while True:
+        time.sleep(1)
+        with open('proxy.json') as fl:
+            data = json.load(fl)
+        if len(data) > j_i:
+            break
+
+    data = data[j_i]
 
     html_map, region_path = codify_json(json.dumps(data))
     service, action = get_info(data)
 
     return render_template('edit_map.html', html_map=html_map, region_path=region_path, service=service, action=action)
 
-@app.route('/create_map', methods=['POST'])
-def create_map():
+@app.route('/createmap', methods=['POST'])
+def createmap():
+    global j_i
     id_path = request.form['selector']
     region_path = request.form['region']
     service = request.form['service']
@@ -87,11 +98,21 @@ def create_map():
     new_map = update_map(id_path, region_path, service, action)
     map_json, region_path = codify_json(new_map)
 
-    return render_template('show_map.html', map_json=map_json)
+    j_i += 1
+    with open('proxy.json') as fl:
+        if j_i == len(json.load(fl)):
+            return render_template('show_map.html', map_json=map_json)
+    return editmap()
 
 @app.route('/proxy', methods=['POST'])
 def proxy():
-    pass
+    new_json = json.loads(request.form['json'])
+    with open('proxy.json') as fl:
+        data = json.load(fl)
+        data.append(new_json)
+    with open('proxy.json', 'w') as fl:
+        json.dump(data, fl)
+    return 'ok'
 
 @app.route('/objectidmap', methods=['GET'])
 def objectidmap():
@@ -99,4 +120,4 @@ def objectidmap():
         return rawjson.read()
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', debug=True, threaded=True)

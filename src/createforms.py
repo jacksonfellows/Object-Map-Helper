@@ -20,7 +20,6 @@ def text_form(data, target):
 def show_error(message):
 	body = ''
 	for line in message.split('\n'):
-		if line == '':
-			continue
-		body += '{0}</br>'.format(line)
+		if line != '':
+			body += '{0}</br>'.format(line)
 	return '<div class="alert alert-danger">{0}</div>'.format(body)

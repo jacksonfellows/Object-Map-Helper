@@ -18,7 +18,7 @@ def get_commands(base):
 	return max(commands, key=lambda a: len(a))
 
 def try_command(command):
-	exit = os.system(command+' &> errors')
+	exit = os.system('https_proxy="http://localhost:9876" {0} &> errors'.format(command))
 	res = True
 	if exit != 0:
 		with open('errors') as fl:
