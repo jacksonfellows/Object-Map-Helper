@@ -23,6 +23,4 @@ def update_map(unique_id_path, region_path, service, action):
         }
 
     with open('objectidmap.json', 'w') as old_map:
-        json.dump(new_map, old_map, indent=2, sort_keys=True)
-
-    return json.dumps(new_map, sort_keys=True)
+        json.dump(new_map, old_map, indent=2, sort_keys=True, separators=(',', ': '))

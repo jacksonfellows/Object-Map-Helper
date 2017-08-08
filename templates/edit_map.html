@@ -16,7 +16,7 @@
 
       {{warning|safe}}
 
-      <form method="post" action="{{ url_for('createmap') }}">
+      <form method="post" action="{{url_for('createmap')}}">
         <div>
           <label for="service">Service</label>
           <input name="service" type="text" class="input-xlarge" value="{{service}}" {{readonly}}>
@@ -30,6 +30,10 @@
         <div>
           <input type="submit" value="Add To Map">
         </div>
+      </form>
+
+      <form method="get" action="{{url_for('createmap')}}">
+          <input type="submit" value="Skip Adding This Action">
       </form>
 
       <p>Click on the unique id</p>

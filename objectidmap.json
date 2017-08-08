@@ -46,6 +46,20 @@
           "regex": "(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)"
         }
       }, 
+      "CreateSubnet": {
+        "location": {
+          "keys": [
+            "request_body", 
+            "VpcId"
+          ]
+        }, 
+        "region": {
+          "keys": [
+            "url"
+          ], 
+          "regex": "(us|eu|ap|sa)-(east|west|south|northeast|southeast|central)-(1|2)"
+        }
+      }, 
       "CreateVpc": {
         "location": {
           "keys": [

@@ -73,35 +73,38 @@ def runcommand():
 @app.route('/editmap', methods=['GET'])
 def editmap():
     global j_i
+    print(j_i)
     while True:
-        time.sleep(1)
         with open('proxy.json') as fl:
             data = json.load(fl)
         if len(data) > j_i:
             break
 
     data = data[j_i]
-
-    html_map, region_path = codify_json(json.dumps(data))
+    html_map, region_path = codify_json(data)
     service, warning, action = get_info(data)
 
     return render_template('edit_map.html', html_map=html_map, region_path=region_path, service=service, action=action, warning=show_error('Please correct capitilization of the service name') if warning else '', readonly='' if warning else 'readonly')
 
-@app.route('/createmap', methods=['POST'])
+@app.route('/createmap', methods=['GET', 'POST'])
 def createmap():
     global j_i
-    id_path = request.form['selector']
-    region_path = request.form['region']
-    service = request.form['service']
-    action = request.form['action']
+    if request.method == 'POST':
+        id_path = request.form['selector']
+        region_path = request.form['region']
+        service = request.form['service']
+        action = request.form['action']
 
-    new_map = update_map(id_path, region_path, service, action)
-    map_json, region_path = codify_json(new_map)
+        update_map(id_path, region_path, service, action)
+
+    with open('objectidmap.json') as fl:
+        data = json.load(fl)
+    html_map, region_path = codify_json(data)
 
     j_i += 1
     with open('proxy.json') as fl:
         if j_i == len(json.load(fl)):
-            return render_template('show_map.html', map_json=map_json)
+            return render_template('show_map.html', map_json=html_map)
     return editmap()
 
 @app.route('/proxy', methods=['POST'])

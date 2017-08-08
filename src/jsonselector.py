@@ -6,8 +6,7 @@ region_regex = re.compile('(us|eu|ap|sa)-(east|west|south|northeast|southeast|ce
 space = re.compile('\s')
 region_path = ''
 
-def get_info(json_str):
-    data = json_str
+def get_info(data):
     request_headers = data['request_headers']
     request_body = data['request_body']
     warning = True
@@ -28,7 +27,7 @@ def get_info(json_str):
 
     return service, warning, action
 
-def codify_json(json_str):
+def codify_json(data):
     '''
     Return HTML <pre><code> block representing a json object. The portions of
     the html corresponding to key/values will contain specfic data-json
@@ -133,7 +132,6 @@ def codify_json(json_str):
             return s
 
 
-    data = json.loads(json_str)
     pre = '<pre><code class=" hljs json">'
     end = '</code></pre>'
     return pre + apply_attrs(data) + end, region_path
